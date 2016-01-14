@@ -22,6 +22,7 @@ public class CourseSchedule {
     private static StudentSQL Students = new StudentSQL();
     private static CourseSQL Courses = new CourseSQL();
     private static ArrayList courseInfo = new ArrayList();
+    private static courseRegistration registration = new courseRegistration();
     
     private static void Students(){
         int option=0;
@@ -30,7 +31,8 @@ public class CourseSchedule {
             Students.getStudents();
             System.out.printf("%n%n%n%n");
             System.out.println("Available Options: (1.) Add Student (2.) Remove Student "
-                    + "(3.) Edit Student Information (99.)Previous Menu");
+                    + "(3.) Edit Student Information (4.) See Student's Registered Courses"
+                    + " (99.)Previous Menu");
             System.out.println("Please choose an option by entering the option number");
             option = scan1.nextInt();
         
@@ -46,6 +48,11 @@ public class CourseSchedule {
                         studentNumChoice = scan1.nextInt();
                         getStudentInfo();
                         Students.editStudent(studentInfo, studentNumChoice);
+                        break;
+                        
+                case 4: System.out.println("Enter a Student No. to See Courses Registered for: ");
+                        studentNumChoice = scan1.nextInt();
+                        registration.coursesRegistered(studentNumChoice);
                         break;
                 case 99: break;
                 default: System.out.println("Invalid option, please choose again.");
@@ -119,7 +126,11 @@ public class CourseSchedule {
         Students.getStudents();
         System.out.println("Enter a Student No. : ");
         int studentnum = scan1.nextInt();
-        
+        Courses.getCourses();
+        System.out.println("Enter a Course No. to enroll in: ");
+        int coursenum = scan1.nextInt();
+        registration.enroll(studentnum, coursenum);
+        System.out.println("Enrolled!");
     }
     
     public static void main(String...args) {

@@ -15,6 +15,25 @@ import java.sql.Time;
  */
 public class consolePrinter {
     
+    public static void printEnrolledCourses(ResultSet result) throws SQLException{
+        System.out.printf("%n%n%n");
+        System.out.println("Enrolled Courses");
+        System.out.printf("+----+-----------------+-------+----------+----------+-----------------+%n");
+        System.out.printf("|No. |Course Name      |Credits|Start Time|End Time  |Location         |%n");
+        System.out.printf("+----+-----------------+-------+----------+----------+-----------------+%n");
+        while (result.next()){
+            int coursenum = result.getInt("CourseID");
+            String coursename = result.getString("CourseName");
+            int credits = result.getInt("Credits");
+            Time start = result.getTime("StartTime");
+            Time end = result.getTime("EndTime");
+            String location = result.getString("Location");
+            System.out.format("|%1$-4d|%2$-17s|%3$-7d|%4$-10s|%5$-10s|%6$-17s|%n", coursenum, coursename,
+                    credits, start, end, location);
+        }
+        System.out.printf("+----+-----------------+-------+----------+----------+-----------------+%n");
+    }
+    
     public static void printStudentList(ResultSet result) throws SQLException{
         System.out.printf("%n%n%n");
         System.out.println("Student List");
@@ -35,7 +54,7 @@ public class consolePrinter {
     
     public static void printCourseList(ResultSet result) throws SQLException {
         System.out.printf("%n%n%n");
-        System.out.println("Student List");
+        System.out.println("Course List");
         System.out.printf("+----+-----------------+-------+----------+----------+-----------------+%n");
         System.out.printf("|No. |Course Name      |Credits|Start Time|End Time  |Location         |%n");
         System.out.printf("+----+-----------------+-------+----------+----------+-----------------+%n");
