@@ -30,9 +30,9 @@ public class CourseSchedule {
         while (option!=99){
             Students.getStudents();
             System.out.printf("%n%n%n%n");
-            System.out.println("Available Options: (1.) Add Student (2.) Remove Student "
-                    + "(3.) Edit Student Information (4.) See Student's Registered Courses"
-                    + " (99.)Previous Menu");
+            System.out.printf("Available Options: (1.) Add Student (2.) Remove Student%n"
+                    + "(3.) Edit Student Information (4.) See Student's Registered Courses%n"
+                    + " (99.)Previous Menu%n");
             System.out.println("Please choose an option by entering the option number");
             option = scan1.nextInt();
         
@@ -79,7 +79,9 @@ public class CourseSchedule {
         while (option!=99){
             Courses.getCourses();
             System.out.printf("%n%n%n%n");
-            System.out.println("Available Options: (1.) Add Course (2.) Remove Course (3.) Edit Course Information (99.)Previous Menu");
+            System.out.printf("Available Options: (1.) Add Course (2.) Remove Course%n"
+                    + "(3.) Edit Course Information (4.) See Students Enrolled for a Course%n"
+                    + "(99.)Previous Menu");
             System.out.println("Please choose an option by entering the option number");
             option = scan1.nextInt();
             switch (option){
@@ -97,6 +99,10 @@ public class CourseSchedule {
                         courseInfo.add(courseNumChoice);
                         Courses.editCourse(courseInfo);
                         courseInfo.clear();
+                        break;
+                case 4: System.out.println("Enter a Course No. to see enrolled students: ");
+                        courseNumChoice = scan1.nextInt();
+                        registration.registeredStudents(courseNumChoice);
                         break;
                 case 99: break;
                 default: System.out.println("Invalid option, please choose again.");
@@ -133,14 +139,27 @@ public class CourseSchedule {
         System.out.println("Enrolled!");
     }
     
+    private static void unenroll(){
+        System.out.printf("%n%n%n%n");
+        Students.getStudents();
+        System.out.println("Enter a Student No. : ");
+        int studentnum = scan1.nextInt();
+        registration.coursesRegistered(studentnum);
+        System.out.println("Enter a Course No. to unenroll from: ");
+        int coursenum = scan1.nextInt();
+        registration.unenroll(studentnum, coursenum);
+        System.out.println("Unenrolled!");
+    }
+    
     public static void main(String...args) {
         // TODO code application logic here
         int option=0;
         
         System.out.println("Welcome!"); 
         while (option != 99){
-            System.out.println("Available Options: (1.) See Student List (2.) See Course List"
-                    + " (4.) Enroll in a Course (99.) Exit the Program");
+            System.out.printf("Available Options: (1.) See Student List (2.) See Course List"
+                    + " %n(3.) See Instructor List (4.) Enroll in a Course %n(5.) "
+                    + "Unenroll from a Course (99.) Exit the Program%n");
             System.out.println("Please choose an option by entering the option number");
             
             option = scan1.nextInt();
@@ -158,6 +177,7 @@ public class CourseSchedule {
                 case 4: enroll();
                         break;
                 
+                case 5: unenroll();
                 case 99: break;
                 
                 default: System.out.println("Invalid option, please choose again.");

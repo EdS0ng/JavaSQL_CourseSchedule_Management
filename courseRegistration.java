@@ -21,6 +21,39 @@ public class courseRegistration extends interactsql{
         super("courseRegistration");
     }
     
+    public void registeredStudents(int course){
+        try (Connection db = DriverManager.getConnection(
+                        "jdbc:mysql://localhost/courseschedule",
+                        "edward",
+                        "edward1"); 
+                PreparedStatement prepared = db.prepareStatement("select Students.* "
+                        + "from courseRegistration "
+                        + "join Students on courseRegistration.StudentID=Students.StudentID "
+                        + "where CourseID=?")){
+            prepared.setInt(1,course);
+            ResultSet result = prepared.executeQuery();
+            consolePrinter.printStudentList(result);
+            result.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+    
+    public void unenroll(int student, int course){
+        try (Connection db = DriverManager.getConnection(
+                        "jdbc:mysql://localhost/courseschedule",
+                        "edward",
+                        "edward1"); 
+                PreparedStatement prepared = db.prepareStatement("delete from "
+                        + "courseRegistration where StudentID=? and CourseID=?")){
+            prepared.setInt(1,student);
+            prepared.setInt(2,course);
+            prepared.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+    
     public void enroll(int student, int course){
         try (Connection db = DriverManager.getConnection(
                         "jdbc:mysql://localhost/courseschedule",
@@ -48,7 +81,8 @@ public class courseRegistration extends interactsql{
                         + "where StudentID=?")){
             prepared.setInt(1,student);
             ResultSet result = prepared.executeQuery();
-            consolePrinter.printEnrolledCourses(result);
+            consolePrinter.printCourseList(result);
+            result.close();
         }catch (SQLException e){
             e.printStackTrace();
         }
