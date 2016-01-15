@@ -10,25 +10,24 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 /**
  *
  * @author edward
  */
-public class StudentSQL extends interactsql{
+public class InstructorSQL extends interactsql{
     
-    public StudentSQL(){
-        super("Student");
+    public InstructorSQL(){
+        super("Instructor");
     }
     
-    public void unenroll(int student, int course){
+    public void signUp(int instructor, int course){
         try (Connection db = DriverManager.getConnection(
                         "jdbc:mysql://localhost/courseschedule",
                         "edward",
                         "edward1"); 
-                PreparedStatement prepared = db.prepareStatement(call+"unenroll(?,?)")){
-            prepared.setInt(1,student);
+                PreparedStatement prepared = db.prepareStatement(call+"teachCourse(?,?)")){
+            prepared.setInt(1,instructor);
             prepared.setInt(2,course);
             prepared.execute();
         }catch (SQLException e){
@@ -36,33 +35,31 @@ public class StudentSQL extends interactsql{
         }
     }
     
-    public void enroll(int student, int course){
+    public void dropCourse(int instructor, int course){
         try (Connection db = DriverManager.getConnection(
                         "jdbc:mysql://localhost/courseschedule",
                         "edward",
                         "edward1"); 
-                PreparedStatement prepared = db.prepareStatement(call+"enroll(?,?)")){
-            prepared.setInt(1,student);
+                PreparedStatement prepared = db.prepareStatement(call+"dropCourse(?,?)")){
+            prepared.setInt(1,instructor);
             prepared.setInt(2,course);
-            prepared.executeUpdate();
+            prepared.execute();
         }catch (SQLException e){
             e.printStackTrace();
         }
     }
     
-    public void coursesRegistered(int student){
+    public void courses(int instructor){
         try (Connection db = DriverManager.getConnection(
                         "jdbc:mysql://localhost/courseschedule",
                         "edward",
                         "edward1"); 
-                PreparedStatement prepared = db.prepareStatement(call+"coursesRegistered(?)")){
-            prepared.setInt(1,student);
+                PreparedStatement prepared = db.prepareStatement(call+"coursesTaught(?)")){
+            prepared.setInt(1,instructor);
             ResultSet result = prepared.executeQuery();
             consolePrinter.printCourseList(result);
-            result.close();
         }catch (SQLException e){
             e.printStackTrace();
         }
     }
-    
 }

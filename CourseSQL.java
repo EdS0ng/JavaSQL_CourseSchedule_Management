@@ -22,87 +22,37 @@ import java.sql.Time;
 public class CourseSQL extends interactsql{
     
     public CourseSQL(){
-        super("Courses");
+        super("Course");
     }
     
-    public void getCourses(){
-        try (Connection db = DriverManager.getConnection("jdbc:mysql://localhost/courseschedule",
-                        "edward",
-                        "edward1")){
-            Statement statement = db.createStatement();
-            ResultSet result = statement.executeQuery(select+tableName);
-            consolePrinter.printCourseList(result);
-        }catch (SQLException err){
-            err.printStackTrace();
-        }
-    }
-    
-    public void addCourse(ArrayList args){
+    public void registeredStudents(int course){
         try (Connection db = DriverManager.getConnection(
                         "jdbc:mysql://localhost/courseschedule",
                         "edward",
                         "edward1"); 
-                PreparedStatement prepared = db.prepareStatement("insert into Courses"
-                        + "(CourseName, Credits, StartTime, EndTime, Location)"
-                                + "values(?, ?, ?, ?, ?)")){
-            for (int i=1;i<=args.size();i++){
-                if (args.get(i-1) instanceof Time){
-                    Time x= (Time)args.get(i-1);
-                    prepared.setTime(i,x);
-                }
-                if (args.get(i-1) instanceof String){
-                    String x = (String)args.get(i-1);
-                    prepared.setString(i, x);
-                }
-                if (args.get(i-1) instanceof Integer){
-                    Integer x = (Integer)args.get(i-1);
-                    prepared.setInt(i,x);
-                }
-            }
-            prepared.executeUpdate();
+                PreparedStatement prepared = db.prepareStatement(call+"registeredStudents(?)")){
+            prepared.setInt(1,course);
+            ResultSet result = prepared.executeQuery();
+            consolePrinter.printStudentList(result);
+            result.close();
         }catch (SQLException e){
             e.printStackTrace();
         }
     }
     
-    public void editCourse(ArrayList args){
+    public void courseInstructor(int course){
         try (Connection db = DriverManager.getConnection(
                         "jdbc:mysql://localhost/courseschedule",
                         "edward",
                         "edward1"); 
-                PreparedStatement prepared = db.prepareStatement("update Courses"
-                        + " set CourseName=?, Credits=?, StartTime=?, EndTime=?, Location=? where CourseID=?")){
-            for (int i=1;i<=args.size();i++){
-                if (args.get(i-1) instanceof Time){
-                    Time x= (Time)args.get(i-1);
-                    prepared.setTime(i,x);
-                }
-                if (args.get(i-1) instanceof String){
-                    String x = (String)args.get(i-1);
-                    prepared.setString(i, x);
-                }
-                if (args.get(i-1) instanceof Integer){
-                    Integer x = (Integer)args.get(i-1);
-                    prepared.setInt(i,x);
-                }
-            }
-            prepared.executeUpdate();
+                PreparedStatement prepared = db.prepareStatement(call+"courseInstructor(?)")){
+            prepared.setInt(1,course);
+            ResultSet result = prepared.executeQuery();
+            consolePrinter.printInstructorList(result);
+            result.close();
         }catch (SQLException e){
             e.printStackTrace();
         }
     }
     
-    public void deleteCourse(int id){
-        try (Connection db = DriverManager.getConnection(
-                        "jdbc:mysql://localhost/courseschedule",
-                        "edward",
-                        "edward1"); 
-                PreparedStatement prepared = db.prepareStatement("delete from "
-                        + "Courses where CourseID=?")){
-            prepared.setInt(1,id);
-            prepared.executeUpdate();
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-    }
 }

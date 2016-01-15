@@ -36,19 +36,38 @@ public class consolePrinter {
     public static void printCourseList(ResultSet result) throws SQLException {
         System.out.printf("%n%n%n");
         System.out.println("Course List");
-        System.out.printf("+----+-----------------+-------+----------+----------+-----------------+%n");
-        System.out.printf("|No. |Course Name      |Credits|Start Time|End Time  |Location         |%n");
-        System.out.printf("+----+-----------------+-------+----------+----------+-----------------+%n");
+        System.out.printf("+----+-----------------+-------+-----+----------+----------+-----------------+%n");
+        System.out.printf("|No. |Course Name      |Credits|Days |Start Time|End Time  |Location         |%n");
+        System.out.printf("+----+-----------------+-------+-----+----------+----------+-----------------+%n");
         while (result.next()){
             int coursenum = result.getInt("CourseID");
             String coursename = result.getString("CourseName");
             int credits = result.getInt("Credits");
-            Time start = result.getTime("StartTime");
-            Time end = result.getTime("EndTime");
+            String days = result.getString("Days");
+            Time start = result.getTime("Start");
+            Time end = result.getTime("End");
             String location = result.getString("Location");
-            System.out.format("|%1$-4d|%2$-17s|%3$-7d|%4$-10s|%5$-10s|%6$-17s|%n", coursenum, coursename,
-                    credits, start, end, location);
+            System.out.format("|%1$-4d|%2$-17s|%3$-7d|%4$-5s|%5$-10s|%6$-10s|%7$-17s|%n", coursenum, coursename,
+                    credits, days, start, end, location);
         }
-        System.out.printf("+----+-----------------+-------+----------+----------+-----------------+%n");
+        System.out.printf("+----+-----------------+-------+-----+----------+----------+-----------------+%n");
+    }
+    
+    public static void printInstructorList(ResultSet result) throws SQLException{
+        System.out.printf("%n%n%n");
+        System.out.println("Instructor List");
+        System.out.printf("+----+------------------+------------------------+-------------+------+%n");
+        System.out.printf("|No. |Instructor Name   |Department              |Position     |Gender|%n");
+        System.out.printf("+----+------------------+------------------------+-------------+------+%n");
+        while (result.next()){
+            int instructornum = result.getInt("InstructorNo");
+            String instructorname = result.getString("InstructorName");
+            String department = result.getString("Department");
+            String gender = result.getString("Gender");
+            String position = result.getString("Position");
+            System.out.format("|%1$-4d|%2$-18s|%3$-24s|%4$-13s|%5$-6s|%n", instructornum, instructorname,
+                    department, position, gender);
+        }
+        System.out.printf("+----+------------------+------------------------+-------------+------+%n");
     }
 }
